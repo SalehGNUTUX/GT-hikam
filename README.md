@@ -1,5 +1,8 @@
 # GT-hikam
+
 حكم عشوائية في الطرفية و الإشعارات
+
+
 **GT-hikam**  
 سكربت طرفية بسيط لعرض حكم عشوائية عربية عند كل فتح طرفية، مع دعم الإشعار الدوري بالحكم، وخاصية التحديث التلقائي أو اليدوي لملف الحكم من الإنترنت (GitHub).
 
@@ -11,25 +14,24 @@
 - **إشعار دوري:** إشعار بالحكمة في النظام كل فترة (افتراضيًا كل 15 دقيقة، قابل للتغيير).
 - **تحديث الحكم:** فحص أو تحديث ملف الحكم تلقائيًا أو يدويًا من المستودع الأصلي.
 - **سهل التثبيت والإزالة، بدون اعتمادات خارجية معقدة.**
+- **يدعم العمل بدون إنترنت** (طالما الملفات متوفرة محليًا).
+- **جميع ملفات البرنامج في مجلد مخفي داخل المنزل (`~/.GT-hikam`)**
 
 ---
 
 ## التثبيت السريع
 
-1. **نسخ النص البرمجي وملف الحكم:**
-
-   قم بتنزيل السكربت وملف الحكم أو شغل سكربت التثبيت الآلي:
+1. **حمل السكربت وملف الحكم أو شغل سكربت التثبيت الآلي:**
    ```bash
    git clone https://github.com/SalehGNUTUX/GT-hikam.git
    cd GT-hikam
    chmod +x install-gt-hikam.sh
    ./install-gt-hikam.sh
    ```
-
-   أو يمكنك فقط تحميل [install-gt-hikam.sh](./install-gt-hikam.sh) وتشغيله.
+   أو يمكنك فقط تحميل [install-gt-hikam.sh](./install-gt-hikam.sh) وتشغيله، وهو سيجلب بقية الملفات تلقائيًا من GitHub أو يستخدم الملفات المحلية إن وجدت.
 
 2. **سيقوم السكربت تلقائيًا بـ:**
-   - وضع الملفات في `$HOME/GT-hikam`
+   - وضع الملفات في `~/.GT-hikam`
    - تحديث bashrc/zshrc لعرض حكمة عند كل فتح طرفية
    - تفعيل إشعار دوري بالحكمة كل 15 دقيقة (قابل للتعديل)
    - إعداد سياسة التحديث التلقائي لملف الحكم
@@ -45,27 +47,27 @@
 - يتم تفعيله تلقائيًا كل 15 دقيقة.
 - لإيقاف الإشعار:
   ```bash
-  ~/GT-hikam/gt-hikam.sh --notify-stop
+  ~/.GT-hikam/gt-hikam.sh --notify-stop
   ```
 - لتغيير الفاصل الزمني (مثال: كل 5 دقائق):
   ```bash
-  ~/GT-hikam/gt-hikam.sh --notify-start -i 300
+  ~/.GT-hikam/gt-hikam.sh --notify-start -i 300
   ```
 
 ### **تحديث الحكم**
 - لفحص وجود تحديث:
   ```bash
-  ~/GT-hikam/gt-hikam.sh --check-update
+  ~/.GT-hikam/gt-hikam.sh --check-update
   ```
 - لجلب آخر تحديث مباشرة:
   ```bash
-  ~/GT-hikam/gt-hikam.sh --update-hikam
+  ~/.GT-hikam/gt-hikam.sh --update-hikam
   ```
 - لتغيير سياسة التحديث (اسأل/دائمًا/لا أبدًا):
   ```bash
-  ~/GT-hikam/gt-hikam.sh --auto-update ask
-  ~/GT-hikam/gt-hikam.sh --auto-update always
-  ~/GT-hikam/gt-hikam.sh --auto-update never
+  ~/.GT-hikam/gt-hikam.sh --auto-update ask
+  ~/.GT-hikam/gt-hikam.sh --auto-update always
+  ~/.GT-hikam/gt-hikam.sh --auto-update never
   ```
 
 ---
@@ -74,25 +76,25 @@
 
 ```bash
 # عرض حكمة في الطرفية مع فحص التحديثات التلقائي (افتراضي)
-~/GT-hikam/gt-hikam.sh
+~/.GT-hikam/gt-hikam.sh
 
 # بدء إشعارات دورية
-~/GT-hikam/gt-hikam.sh --notify-start
+~/.GT-hikam/gt-hikam.sh --notify-start
 
 # إيقاف الإشعارات الدورية
-~/GT-hikam/gt-hikam.sh --notify-stop
+~/.GT-hikam/gt-hikam.sh --notify-stop
 
 # فحص وجود تحديث لملف الحكم
-~/GT-hikam/gt-hikam.sh --check-update
+~/.GT-hikam/gt-hikam.sh --check-update
 
 # جلب آخر تحديث لملف الحكم فورًا
-~/GT-hikam/gt-hikam.sh --update-hikam
+~/.GT-hikam/gt-hikam.sh --update-hikam
 
 # تغيير سياسة التحديث التلقائي
-~/GT-hikam/gt-hikam.sh --auto-update [always|never|ask]
+~/.GT-hikam/gt-hikam.sh --auto-update [always|never|ask]
 
 # ضبط زمن الإشعارات (بالثواني)
-~/GT-hikam/gt-hikam.sh --notify-start -i 600   # كل 10 دقائق مثلاً
+~/.GT-hikam/gt-hikam.sh --notify-start -i 600   # كل 10 دقائق مثلاً
 ```
 
 ---
@@ -109,7 +111,7 @@
 1. احذف السطور التي أضافها السكربت من `.bashrc` أو `.zshrc`.
 2. احذف مجلد البرنامج:
    ```bash
-   rm -rf ~/GT-hikam
+   rm -rf ~/.GT-hikam
    ```
 
 ---
@@ -124,7 +126,7 @@
 
 ## الرخصة
 
-MIT License
+GPL V2.0 License
 
 ---
 
