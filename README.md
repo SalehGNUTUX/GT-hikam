@@ -20,6 +20,25 @@
 ---
 
 ## التثبيت السريع
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SalehGNUTUX/GT-hikam/main/install-gt-hikam.sh)"
+```
+
+أو إذا كنت تريد أمراً واحداً للتثبيت المباشر:
+
+```bash
+git clone https://github.com/SalehGNUTUX/GT-hikam.git && cd GT-hikam && chmod +x install-gt-hikam.sh && ./install-gt-hikam.sh
+```
+
+**الاختصار الأفضل** (سطر واحد فقط):
+
+```bash
+bash -c "git clone https://github.com/SalehGNUTUX/GT-hikam.git && cd GT-hikam && chmod +x install-gt-hikam.sh && ./install-gt-hikam.sh"
+```
+
+هذا الأمر سيقوم بكل الخطوات تلقائياً في سطر واحد! ✅
+
+## التثبيت بالطريقة التقليدية أو على حاسوب بدون أنترنت
 
 1. **حمل السكربت وملف الحكم أو شغل سكربت التثبيت الآلي:**
    ```bash
