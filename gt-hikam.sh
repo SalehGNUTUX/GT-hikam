@@ -100,11 +100,80 @@ get_random_hikma() {
 show_hikma_terminal() {
     local hikma
     hikma=$(get_random_hikma)
+    
     if [ -z "$hikma" ]; then
-        echo "لم يتم العثور على حكمة صالحة!"
+        echo -e "${RED}لم يتم العثور على حكمة صالحة!${NC}"
         return 1
     fi
-    echo "$hikma"
+    
+    # التحقق إذا كانت الحكمة من الأئمة
+    local imam=""
+    if [[ "$hikma" == *"الإمام مالك"* ]]; then
+        imam="مالك"
+    elif [[ "$hikma" == *"الإمام الشافعي"* ]]; then
+        imam="الشافعي"
+    elif [[ "$hikma" == *"الإمام أحمد"* ]]; then
+        imam="أحمد بن حنبل"
+    elif [[ "$hikma" == *"الإمام أبو حنيفة"* ]]; then
+        imam="أبو حنيفة النعمان"
+    fi
+    
+    # عرض جمالي
+    local width=60
+    local border_char="═"
+    local corner_char="╔╗╚╝"
+    
+    # إنشاء الحدود
+    local border_line=""
+    for ((i=0; i<width; i++)); do
+        border_line+="$border_char"
+    done
+    
+    # تقسيم النص إلى أسطر
+    echo ""
+    echo -e "${CYAN}╔${border_line}╗${NC}"
+    
+    # إذا كانت الحكمة من إمام، إضافة عنوان خاص
+    if [ -n "$imam" ]; then
+        local title=" حكمة من الإمام $imam "
+        local title_padding=$(( (width - ${#title}) / 2 ))
+        printf "${CYAN}║${NC}%${title_padding}s${MAGENTA}%s${NC}%$((width - title_padding - ${#title}))s${CYAN}║${NC}\n" "" "$title" ""
+        echo -e "${CYAN}╠${border_line}╣${NC}"
+    fi
+    
+    # عرض الحكمة مع تفقيط النص
+    local words=($hikma)
+    local line=""
+    local line_length=0
+    
+    for word in "${words[@]}"; do
+        if (( line_length + ${#word} + 1 > width - 4 )); then
+            printf "${CYAN}║${NC} %-${width}s ${CYAN}║${NC}\n" "$line"
+            line=""
+            line_length=0
+        fi
+        if [ -z "$line" ]; then
+            line="$word"
+            line_length=${#word}
+        else
+            line="$line $word"
+            line_length=$((line_length + ${#word} + 1))
+        fi
+    done
+    
+    if [ -n "$line" ]; then
+        printf "${CYAN}║${NC} %-${width}s ${CYAN}║${NC}\n" "$line"
+    fi
+    
+    echo -e "${CYAN}╚${border_line}╝${NC}"
+    echo ""
+    
+    # إضافة اقتباس إذا كانت من إمام
+    if [ -n "$imam" ]; then
+        echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${WHITE}📜 من حكم أئمة السنة الأربعة رحمهم الله${NC}"
+        echo ""
+    fi
 }
 
 show_hikma_notify() {
