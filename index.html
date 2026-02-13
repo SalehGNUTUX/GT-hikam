@@ -32,12 +32,12 @@
                     <li><a href="#contact" class="nav-link">التواصل</a></li>
                     <!-- Dark/Light mode toggle -->
                     <li class="theme-toggle-container">
-                        <button id="themeToggle" class="theme-toggle" aria-label="تبديل الوضع الداكن/الفاتح">🌙</button>
+                        <button id="themeToggle" class="theme-toggle" aria-label="تبديل الوضع الداكن/الفاتح" title="الوضع الليلي/النهاري">🌙</button>
                     </li>
                     <!-- Font selector -->
                     <li class="font-selector-container">
                         <select id="fontSelector" class="font-selector" aria-label="اختيار الخط">
-                            <option value="Amiri">الخط الافتراضي (أميري)</option>
+                            <option value="Amiri">أميري (افتراضي)</option>
                             <option value="Almarai">المراعي</option>
                             <option value="Cairo">القاهرة</option>
                             <option value="ArslanWessam">أرسلان وسام</option>
@@ -70,7 +70,7 @@
             </h1>
             <p class="hero-subtitle" data-aos="fade-up">
                 أقوال الأئمة الأربعة وحكم العرب الخالدة<br>
-                من مالك والشافاعي إلى أحمد وأبي حنيفة
+                من مالك والشافعي إلى أحمد وأبي حنيفة
             </p>
             <div class="cta-buttons">
                 <a href="#daily-wisdom" class="btn btn-primary">حكمة اليوم</a>
@@ -84,7 +84,7 @@
         </div>
     </section>
 
-    <!-- Daily Wisdom Section / حكمة اليوم (جديد) -->
+    <!-- Daily Wisdom Section / حكمة اليوم -->
     <section id="daily-wisdom" class="daily-wisdom">
         <div class="container">
             <div class="section-header">
@@ -94,7 +94,7 @@
             <div class="wisdom-card daily-card" id="dailyWisdomCard">
                 <div class="card-content">
                     <div class="quote-icon">"</div>
-                    <p class="wisdom-text" id="dailyWisdomText">العِلْمُ نُورٌ، وَالجَهْلُ ظَلَامٌ، وَمَنْ نَوَّرَ اللَّهُ قَلْبَهُ هُدِيَ إِلَى الصَّوَابِ.</p>
+                    <p class="wisdom-text" id="dailyWisdomText">العِلْمُ نُورٌ، وَالجَهْلُ ظَلَامٌ.</p>
                     <p class="wisdom-source" id="dailyWisdomSource">— الإمام مالك</p>
                 </div>
                 <div class="wisdom-region" id="dailyWisdomRegion">المشرق العربي</div>
@@ -106,7 +106,7 @@
         </div>
     </section>
 
-    <!-- Wisdom Showcase / استعراض الحكم (موسع) -->
+    <!-- Wisdom Showcase / استعراض الحكم -->
     <section id="wisdom" class="wisdom-showcase">
         <div class="container">
             <div class="section-header">
@@ -115,7 +115,7 @@
                 <p class="section-subtitle">من أقوال الأئمة الأربعة والحكماء</p>
             </div>
             <div class="wisdom-grid" id="wisdomGrid">
-                <!-- يتم تعبئتها تلقائياً عبر JavaScript من ملف الحكم -->
+                <!-- يتم تعبئتها تلقائياً عبر JavaScript -->
             </div>
         </div>
     </section>
@@ -147,7 +147,7 @@
         </div>
     </section>
 
-    <!-- Regions Section / قسم المناطق الجغرافية (كما هو) -->
+    <!-- Regions Section / قسم المناطق الجغرافية -->
     <section id="regions" class="regions">
         <div class="container">
             <div class="section-header">
@@ -174,7 +174,7 @@
         </div>
     </section>
 
-    <!-- Installation Section / قسم التثبيت (كما هو) -->
+    <!-- Installation Section / قسم التثبيت -->
     <section class="installation">
         <div class="container">
             <div class="section-header">
@@ -182,20 +182,47 @@
                 <div class="title-underline"></div>
             </div>
             <div class="installation-content">
-                <div class="install-text" data-aos="fade-left"><h3>ثبت HIKAM الآن</h3><p>التثبيت سهل وسريع. ما عليك سوى نسخ أمر واحد.</p></div>
-                <div class="install-code" data-aos="fade-right"><pre><code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/SalehGNUTUX/GT-hikam/main/install-gt-hikam.sh)"</code></pre><button class="copy-btn" onclick="copyToClipboard()">📋 انسخ الأمر</button></div>
+                <div class="install-text" data-aos="fade-left">
+                    <h3>ثبت HIKAM الآن</h3>
+                    <p>التثبيت سهل وسريع. ما عليك سوى نسخ أمر واحد.</p>
+                </div>
+                <div class="install-code" data-aos="fade-right">
+                    <pre><code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/SalehGNUTUX/GT-hikam/main/install-gt-hikam.sh)"</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard()">📋 انسخ الأمر</button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer (كما هو مع تحديث التاريخ) -->
+    <!-- Footer -->
     <footer id="contact" class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section" data-aos="fade-up"><h4>HIKAM حكم</h4><p>مكتبة حكم إسلامية وعربية شاملة متاحة للجميع<br>مفتوحة المصدر تحت رخصة GPL v2.0</p></div>
-                <div class="footer-section" data-aos="fade-up" data-aos-delay="100"><h4>الروابط المهمة</h4><ul class="footer-links"><li><a href="#home">الرئيسية</a></li><li><a href="#daily-wisdom">حكمة اليوم</a></li><li><a href="#wisdom">المكتبة</a></li></ul></div>
-                <div class="footer-section" data-aos="fade-up" data-aos-delay="200"><h4>المشروع</h4><ul class="footer-links"><li><a href="https://github.com/SalehGNUTUX/GT-hikam" target="_blank">📦 المستودع على GitHub</a></li><li><a href="https://github.com/SalehGNUTUX/GT-hikam/issues" target="_blank">🐛 الإبلاغ عن مشاكل</a></li></ul></div>
-                <div class="footer-section social" data-aos="fade-up" data-aos-delay="300"><h4>تابعنا</h4><div class="social-links"><a href="https://github.com/SalehGNUTUX" title="GitHub" class="social-link"><span class="icon">🐙</span></a></div></div>
+                <div class="footer-section" data-aos="fade-up">
+                    <h4>HIKAM حكم</h4>
+                    <p>مكتبة حكم إسلامية وعربية شاملة متاحة للجميع<br>مفتوحة المصدر تحت رخصة GPL v2.0</p>
+                </div>
+                <div class="footer-section" data-aos="fade-up" data-aos-delay="100">
+                    <h4>الروابط المهمة</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#daily-wisdom">حكمة اليوم</a></li>
+                        <li><a href="#wisdom">المكتبة</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section" data-aos="fade-up" data-aos-delay="200">
+                    <h4>المشروع</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/SalehGNUTUX/GT-hikam" target="_blank">📦 المستودع على GitHub</a></li>
+                        <li><a href="https://github.com/SalehGNUTUX/GT-hikam/issues" target="_blank">🐛 الإبلاغ عن مشاكل</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section social" data-aos="fade-up" data-aos-delay="300">
+                    <h4>تابعنا</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/SalehGNUTUX" title="GitHub" class="social-link"><span class="icon">🐙</span></a>
+                    </div>
+                </div>
             </div>
             <div class="footer-divider"></div>
             <div class="footer-bottom">
