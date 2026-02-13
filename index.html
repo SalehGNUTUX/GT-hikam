@@ -1,35 +1,426 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حكمة - اقتباسات</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            direction: rtl;
-            text-align: right;
-        }
-        .quote {
-            margin: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-        }
-    </style>
+    <meta name="description" content="HIKAM حكم - موقع متخصص في استعراض الحكم الإسلامية والعربية من المشرق والمغرب والأندلس">
+    <meta name="author" content="GT-Hikam Project">
+    <title>HIKAM حكم | حكم إسلامية وعربية</title>
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
-    <h1>اقتباسات حكيمة</h1>
-    <div class="quote">
-        <p>العقل زينة لا تشتريها من بازار.
-        <br>- مثل عربي</p>
-    </div>
-    <div class="quote">
-        <p>العطاء لا ينقص من المال، بل يزيده.
-        <br>- مثل عربي</p>
-    </div>
+    <!-- Header / رأس الصفحة -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <span class="logo-text">HIKAM</span>
+                    <span class="logo-subtitle">حكم</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link">الرئيسية</a></li>
+                    <li><a href="#about" class="nav-link">عن المشروع</a></li>
+                    <li><a href="#wisdom" class="nav-link">الحكم</a></li>
+                    <li><a href="#regions" class="nav-link">المناطق</a></li>
+                    <li><a href="#contact" class="nav-link">التواصل</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section / قسم البداية -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="arabic-decor top-decor">❀</div>
+            <h1 class="hero-title" data-aos="fade-down">
+                <span class="title-main">HIKAM</span>
+                <span class="title-sub">حكم المسلمين والعرب</span>
+            </h1>
+            <p class="hero-subtitle" data-aos="fade-up">
+                استعراض الحكم الإسلامية والعربية الخالدة<br>
+                من المشرق والمغرب والأندلس
+            </p>
+            <div class="cta-buttons">
+                <a href="#wisdom" class="btn btn-primary">اكتشف الحكم</a>
+                <a href="#about" class="btn btn-secondary">تعرف على المشروع</a>
+            </div>
+            <div class="arabic-decor bottom-decor">❀</div>
+        </div>
+        <div class="hero-background">
+            <div class="geometric-pattern pattern-1"></div>
+            <div class="geometric-pattern pattern-2"></div>
+        </div>
+    </section>
+
+    <!-- About Section / قسم المعلومات -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">عن المشروع</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-card" data-aos="fade-right">
+                    <div class="card-icon">
+                        <span class="icon-circle">📚</span>
+                    </div>
+                    <h3>مكتبة حكم ضخمة</h3>
+                    <p>
+                        مجموعة شاملة من الحكم والأمثال الإسلامية والعربية التي جمعتها الأجيال.
+                        كل حكمة تحمل معنى عميق وحكمة غالية.
+                    </p>
+                </div>
+
+                <div class="about-card" data-aos="fade-up">
+                    <div class="card-icon">
+                        <span class="icon-circle">🌍</span>
+                    </div>
+                    <h3>امتداد جغرافي واسع</h3>
+                    <p>
+                        تجمع الحكم من أرجاء الأمة الإسلامية: المشرق العربي والمغرب الإسلامي
+                        والأندلس الحضارية، لتعكس تنوع الفكر الإسلامي العربي.
+                    </p>
+                </div>
+
+                <div class="about-card" data-aos="fade-left">
+                    <div class="card-icon">
+                        <span class="icon-circle">⚙️</span>
+                    </div>
+                    <h3>أداة مفتوحة المصدر</h3>
+                    <p>
+                        مشروع حر ومفتوح المصدر متاح على GitHub. يمكنك المساهمة والتطوير
+                        وتحسين المشروع بحرية كاملة تحت رخصة GPL v2.
+                    </p>
+                </div>
+            </div>
+
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-right">
+                    <h3>رؤية المشروع</h3>
+                    <p>
+                        يهدف مشروع HIKAM إلى الحفاظ على الكنز الفكري الإسلامي العربي وإتاحته
+                        لكل المهتمين. نؤمن بأن الحكم والأمثال هي أساس الحكمة الإنسانية التي تربط
+                        بين أجيالنا وترشدنا نحو حياة أفضل.
+                    </p>
+                    <p>
+                        المشروع يوفر حكمة عشوائية في سطر الأوامر (CLI) بطريقة احترافية وسلسة،
+                        مما يجعل الحكمة متاحة لكل مستخدم لينكس كل مرة يفتح الطرفية.
+                    </p>
+                </div>
+                <div class="about-features" data-aos="fade-left">
+                    <h3>المميزات الرئيسية</h3>
+                    <ul class="features-list">
+                        <li>
+                            <span class="feature-icon">✨</span>
+                            <span>حكم عشوائية في سطر الأوامر</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🔔</span>
+                            <span>إشعارات دورية بحكم جديدة</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">⚡</span>
+                            <span>تحديثات تلقائية دون تعليق</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">📦</span>
+                            <span>سهل التثبيت والاستخدام</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🔐</span>
+                            <span>مفتوح المصدر وآمن تماماً</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🌐</span>
+                            <span>يعمل على جميع توزيعات لينكس</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wisdom Showcase / استعراض الحكم -->
+    <section id="wisdom" class="wisdom-showcase">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">استعراض الحكم</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="wisdom-grid">
+                <!-- حكمة 1 -->
+                <div class="wisdom-card" data-aos="fade-up">
+                    <div class="card-content">
+                        <div class="quote-icon">"</div>
+                        <p class="wisdom-text">
+                            العلم نور والجهل ظلام، والحكيم من استضاء بنور العلم وتجنب ظلام الجهل
+                        </p>
+                        <p class="wisdom-source">— الإمام علي بن أبي طالب</p>
+                    </div>
+                    <div class="wisdom-region">الجزيرة العربية</div>
+                </div>
+
+                <!-- حكمة 2 -->
+                <div class="wisdom-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-content">
+                        <div class="quote-icon">"</div>
+                        <p class="wisdom-text">
+                            من عرف نفسه فقد عرف ربه، ومن جهل نفسه فقد جهل ربه
+                        </p>
+                        <p class="wisdom-source">— الإمام الغزالي</p>
+                    </div>
+                    <div class="wisdom-region">المغرب الإسلامي</div>
+                </div>
+
+                <!-- حكمة 3 -->
+                <div class="wisdom-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-content">
+                        <div class="quote-icon">"</div>
+                        <p class="wisdom-text">
+                            الصبر مفتاح الفرج، والصدق سبيل النجاح، والعدل أساس الملك
+                        </p>
+                        <p class="wisdom-source">— الحكم العربية</p>
+                    </div>
+                    <div class="wisdom-region">بلاد الشام</div>
+                </div>
+
+                <!-- حكمة 4 -->
+                <div class="wisdom-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-content">
+                        <div class="quote-icon">"</div>
+                        <p class="wisdom-text">
+                            العقل زينة، والعلم سلاح، والأدب فضيلة، والشرف جوهر
+                        </p>
+                        <p class="wisdom-source">— الأندلس الحضارية</p>
+                    </div>
+                    <div class="wisdom-region">الأندلس</div>
+                </div>
+
+                <!-- حكمة 5 -->
+                <div class="wisdom-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card-content">
+                        <div class="quote-icon">"</div>
+                        <p class="wisdom-text">
+                            من يصبر على قسوة الحياة ينل حلاوة النجاح، ومن يستسلم للكسل يذوق مرارة الفشل
+                        </p>
+                        <p class="wisdom-source">— الحكم الشرقية</p>
+                    </div>
+                    <div class="wisdom-region">المشرق العربي</div>
+                </div>
+
+                <!-- حكمة 6 -->
+                <div class="wisdom-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="card-content">
+                        <div class="quote-icon">"</div>
+                        <p class="wisdom-text">
+                            الأخلاق أساس الدين، والعدل جوهر السلام، والرحمة نور الإيمان
+                        </p>
+                        <p class="wisdom-source">— الحكم الإسلامية</p>
+                    </div>
+                    <div class="wisdom-region">العالم الإسلامي</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regions Section / قسم المناطق الجغرافية -->
+    <section id="regions" class="regions">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">مناطق الحكم</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="regions-grid">
+                <div class="region-card east" data-aos="flip-left">
+                    <div class="region-header">
+                        <h3>المشرق العربي</h3>
+                        <span class="region-emoji">🌅</span>
+                    </div>
+                    <div class="region-description">
+                        <p>
+                            حكم من الجزيرة العربية والعراق والشام ومصر. حكم سكان المشرق الذي 
+                            اشتهر بالفصاحة والبيان والحكمة العملية في الحياة.
+                        </p>
+                    </div>
+                    <div class="region-stats">
+                        <span class="stat">الحضارة القديمة</span>
+                        <span class="stat">الفكر السياسي</span>
+                    </div>
+                </div>
+
+                <div class="region-card maghreb" data-aos="flip-left" data-aos-delay="200">
+                    <div class="region-header">
+                        <h3>المغرب الإسلامي</h3>
+                        <span class="region-emoji">🏜️</span>
+                    </div>
+                    <div class="region-description">
+                        <p>
+                            حكم من المغرب والجزائر وتونس وليبيا. حكم تعكس حكمة البدو والصحراء 
+                            وصبر الإنسان المغاربي عبر العصور.
+                        </p>
+                    </div>
+                    <div class="region-stats">
+                        <span class="stat">الحكمة البدوية</span>
+                        <span class="stat">الفكر الصوفي</span>
+                    </div>
+                </div>
+
+                <div class="region-card andalus" data-aos="flip-left" data-aos-delay="400">
+                    <div class="region-header">
+                        <h3>الأندلس</h3>
+                        <span class="region-emoji">🏰</span>
+                    </div>
+                    <div class="region-description">
+                        <p>
+                            حكم من الحضارة الأندلسية التي اشتهرت بالعلم والأدب والفن. حكم تعكس 
+                            عبقرية المسلمين في الأندلس وإسهاماتهم الحضارية.
+                        </p>
+                    </div>
+                    <div class="region-stats">
+                        <span class="stat">العلم والفنون</span>
+                        <span class="stat">الحضارة والإبداع</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section / قسم التثبيت -->
+    <section class="installation">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">البدء السريع</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="installation-content">
+                <div class="install-text" data-aos="fade-left">
+                    <h3>ثبت HIKAM الآن</h3>
+                    <p>
+                        التثبيت سهل وسريع. ما عليك سوى نسخ أمر واحد والصقه في الطرفية الخاصة بك.
+                    </p>
+                </div>
+
+                <div class="install-code" data-aos="fade-right">
+                    <pre><code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/SalehGNUTUX/GT-hikam/main/install-gt-hikam.sh)"</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard()">📋 انسخ الأمر</button>
+                </div>
+            </div>
+
+            <div class="quick-commands">
+                <h3>الأوامر السريعة</h3>
+                <div class="commands-grid">
+                    <div class="command-card">
+                        <code>~/.GT-hikam/gt-hikam.sh</code>
+                        <p>عرض حكمة عشوائية</p>
+                    </div>
+                    <div class="command-card">
+                        <code>~/.GT-hikam/gt-hikam.sh --notify-start</code>
+                        <p>بدء الإشعارات الدورية</p>
+                    </div>
+                    <div class="command-card">
+                        <code>~/.GT-hikam/gt-hikam.sh --notify-stop</code>
+                        <p>إيقاف الإشعارات</p>
+                    </div>
+                    <div class="command-card">
+                        <code>~/.GT-hikam/gt-hikam.sh --help</code>
+                        <p>عرض المساعدة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer / التواصل والتذييل -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section" data-aos="fade-up">
+                    <h4>HIKAM حكم</h4>
+                    <p>
+                        مكتبة حكم إسلامية وعربية شاملة متاحة للجميع<br>
+                        مفتوحة المصدر تحت رخصة GPL v2.0
+                    </p>
+                </div>
+
+                <div class="footer-section" data-aos="fade-up" data-aos-delay="100">
+                    <h4>الروابط المهمة</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#about">عن المشروع</a></li>
+                        <li><a href="#wisdom">الحكم</a></li>
+                        <li><a href="#regions">المناطق</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section" data-aos="fade-up" data-aos-delay="200">
+                    <h4>المشروع</h4>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="https://github.com/SalehGNUTUX/GT-hikam" target="_blank">
+                                📦 المستودع على GitHub
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/SalehGNUTUX/GT-hikam/issues" target="_blank">
+                                🐛 الإبلاغ عن مشاكل
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/SalehGNUTUX/GT-hikam" target="_blank">
+                                🤝 المساهمة
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-section social" data-aos="fade-up" data-aos-delay="300">
+                    <h4>تابعنا</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/SalehGNUTUX" title="GitHub" class="social-link">
+                            <span class="icon">🐙</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-bottom">
+                <p class="copyright">
+                    &copy; 2024 - مشروع HIKAM حكم | جميع الحقوق محفوظة
+                </p>
+                <p class="project-info">
+                    مشروع مفتوح المصدر من تطوير
+                    <a href="https://github.com/SalehGNUTUX" target="_blank" class="author-link">
+                        SalehGNUTUX
+                    </a>
+                    |
+                    <a href="https://github.com/SalehGNUTUX/GT-hikam" target="_blank" class="repo-link">
+                        عرض المستودع
+                    </a>
+                </p>
+                <p class="license-info">
+                    رخصة GPL v2.0 | 
+                    <span class="oss-badge">مفتوح المصدر</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" class="scroll-top-btn">↑</button>
+
+    <script src="js/script.js"></script>
 </body>
 </html>
