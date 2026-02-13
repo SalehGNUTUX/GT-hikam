@@ -855,4 +855,66 @@ a:hover {
     .social-links {
         justify-content: center;
     }
+    /* Daily Wisdom Section */
+.daily-wisdom {
+    padding: var(--spacing-xl) 0;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(26, 71, 42, 0.1));
+}
+
+.daily-card {
+    max-width: 800px;
+    margin: 0 auto var(--spacing-lg);
+    border-right: 4px solid var(--secondary-color);
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.daily-card .wisdom-text {
+    font-size: 1.3rem;
+    line-height: 2;
+}
+
+.daily-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+}
+
+.daily-hint {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-top: calc(var(--spacing-sm) * -1);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* تحسين عرض الشبكة */
+.wisdom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* تنسيق الحكم المختلفة حسب المصدر */
+.wisdom-card[data-source="malik"] .wisdom-region {
+    background: linear-gradient(90deg, #2c5f2d, #1a472a);
+}
+.wisdom-card[data-source="shafii"] .wisdom-region {
+    background: linear-gradient(90deg, #b8860b, #8b6910);
+}
+.wisdom-card[data-source="hanbal"] .wisdom-region {
+    background: linear-gradient(90deg, #8b4513, #5a2e0c);
+}
+.wisdom-card[data-source="hanifa"] .wisdom-region {
+    background: linear-gradient(90deg, #2c3e50, #1a2632);
+}
+.wisdom-card[data-source="arab"] .wisdom-region {
+    background: linear-gradient(90deg, #4a6b8a, #2c4a6b);
+}
 }
