@@ -39,15 +39,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeAnimation();
     initializeScrollEffects();
     initThemeToggle();
-    initFontSelector();
+    initFontSelector();  // تم التحديث
     loadWisdomGrid();
     updateDailyWisdom();
     
     document.getElementById('newWisdomBtn').addEventListener('click', updateDailyWisdom);
 });
 
-// ===== دوال التحكم =====
-
+// ===== دوال التحكم الأساسية =====
 function initializeScrollTopButton() {
     const scrollTopBtn = document.getElementById('scrollTopBtn');
     window.addEventListener('scroll', function() {
@@ -156,10 +155,9 @@ function initThemeToggle() {
     });
 }
 
-// ===== Font Selector =====
+// ===== Font Selector (محدث) =====
 function initFontSelector() {
     const fontSelector = document.getElementById('fontSelector');
-    const body = document.body;
     
     // تحميل الخط المحفوظ
     const savedFont = localStorage.getItem('selectedFont') || 'Amiri';
@@ -174,7 +172,9 @@ function initFontSelector() {
 }
 
 function applyFont(fontName) {
-    document.body.style.fontFamily = `'${fontName}', var(--font-secondary)`;
+    // تحديث متغيرات CSS على عنصر الجذر (html) لتغيير الخط في كل مكان
+    document.documentElement.style.setProperty('--font-primary', `'${fontName}', serif`);
+    document.documentElement.style.setProperty('--font-secondary', `'${fontName}', sans-serif`);
 }
 
 // ===== Copy to Clipboard =====
