@@ -4,6 +4,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HIKAM_FILE="$SCRIPT_DIR/hikam.txt"
 PID_FILE="$SCRIPT_DIR/.gt-hikam-notify.pid"
 CONFIG_FILE="$SCRIPT_DIR/.gt-hikam.conf"
+UPDATE_CHECK_TIMEOUT=3  # 3 ثواني للتحقق من التحديثات في الخلفية
 
 GITHUB_HIKAM_RAW_URL="https://raw.githubusercontent.com/SalehGNUTUX/GT-hikam/main/hikam.txt"
 DEFAULT_INTERVAL=$((15*60)) # 15 دقيقة
@@ -27,14 +28,12 @@ check_update_hikam() {
     local tmp_file
     tmp_file=$(mktemp)
 
-    if ! curl -fsSL "$remote_url" -o "$tmp_file"; then
-        echo "تعذر جلب hikam.txt من الإنترنت."
+    if ! curl -fsSL --max-time 3 "$remote_url" -o "$tmp_file" 2>/dev/null; then
         rm -f "$tmp_file"
         return 2
     fi
 
     if ! cmp -s "$local_file" "$tmp_file"; then
-        echo "يوجد إصدار أحدث من ملف الحكم."
         rm -f "$tmp_file"
         return 1
     else
@@ -63,10 +62,10 @@ maybe_update_hikam() {
     if [ $status -eq 1 ]; then
         case "$AUTO_UPDATE" in
             always)
-                update_hikam
+                update_hikam > /dev/null 2>&1
                 ;;
             never)
-                echo "تم تجاهل التحديث (الإعداد: عدم التحديث التلقائي)."
+                # تجاهل التحديث بصمت
                 ;;
             *)
                 read -p "يوجد تحديث جديد. هل تريد التحديث الآن؟ (y/n/a/never): " ans
@@ -86,6 +85,26 @@ maybe_update_hikam() {
                 ;;
         esac
     fi
+}
+
+# --- دالة البحث عن التحديثات في الخلفية (بدون انتظار) ---
+check_update_background() {
+    # تشغيل التحقق من التحديثات في عملية منفصلة في الخلفية مع timeout
+    (
+        if timeout $UPDATE_CHECK_TIMEOUT bash -c "
+            tmp_file=\$(mktemp)
+            if curl -fsSL --max-time $UPDATE_CHECK_TIMEOUT \"$GITHUB_HIKAM_RAW_URL\" -o \"\$tmp_file\" 2>/dev/null; then
+                if ! cmp -s \"$HIKAM_FILE\" \"\$tmp_file\"; then
+                    # يوجد تحديث جديد - نحفظ في ملف علامة
+                    touch \"$SCRIPT_DIR/.update-available\"
+                fi
+            fi
+            rm -f \"\$tmp_file\"
+        " 2>/dev/null; then
+            :
+        fi
+    ) &
+    disown  # فصل العملية تماماً عن الـ shell
 }
 
 # --- عرض حكمة طرفية ---
@@ -167,82 +186,76 @@ show_hikma_terminal() {
     
     echo -e "${CYAN}╚${border_line}╝${NC}"
     echo ""
-    
-    # إضافة اقتباس إذا كانت من إمام
-    if [ -n "$imam" ]; then
-        echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${WHITE}📜 من حكم أئمة السنة الأربعة رحمهم الله${NC}"
-        echo ""
-    fi
 }
 
-show_hikma_notify() {
-    local hikma
-    hikma=$(get_random_hikma)
-    if [ -z "$hikma" ]; then
-        notify-send "GT-hikam" "لم يتم العثور على حكمة صالحة!"
-    else
-        notify-send "GT-hikam" "$hikma"
-    fi
-}
-
-notify_loop() {
-    local interval=$1
-    while true; do
-        show_hikma_notify
-        sleep "$interval"
-    done
-}
-
+# --- دوال الإشعارات الدورية ---
 start_notify() {
-    local interval=$1
-    if [ -f "$PID_FILE" ] && kill -0 $(cat "$PID_FILE") 2>/dev/null; then
-        echo "الإشعارات تعمل بالفعل (PID: $(cat "$PID_FILE"))"
-        exit 0
+    local interval="${1:-$DEFAULT_INTERVAL}"
+    
+    if [ -f "$PID_FILE" ]; then
+        pid=$(cat "$PID_FILE")
+        if kill -0 "$pid" 2>/dev/null; then
+            echo "الإشعارات قيد التشغيل بالفعل (PID: $pid)"
+            return 0
+        fi
     fi
-    (notify_loop "$interval" &) 
-    echo $! > "$PID_FILE"
-    disown
-    echo "تم بدء إشعارات GT-hikam (كل $((interval/60)) دقيقة)"
+    
+    # بدء عملية الإشعارات في الخلفية
+    (
+        while true; do
+            sleep "$interval"
+            
+            # التحقق من التحديث بهدوء
+            if timeout $UPDATE_CHECK_TIMEOUT check_update_hikam > /dev/null 2>&1; then
+                :
+            fi
+            
+            # عرض حكمة عشوائية في الإشعار
+            local hikma=$(get_random_hikma)
+            if [ -n "$hikma" ]; then
+                notify-send -t 5000 "GT-hikam 📖" "$hikma" 2>/dev/null || true
+            fi
+        done
+    ) &
+    
+    local bg_pid=$!
+    echo "$bg_pid" > "$PID_FILE"
+    echo "تم بدء الإشعارات (PID: $bg_pid) كل $interval ثانية"
 }
 
 stop_notify() {
     if [ -f "$PID_FILE" ]; then
-        local pid
         pid=$(cat "$PID_FILE")
-        if kill -0 $pid 2>/dev/null; then
-            kill $pid
-            echo "تم إيقاف إشعارات GT-hikam (PID: $pid)"
+        if kill -0 "$pid" 2>/dev/null; then
+            kill "$pid"
+            rm -f "$PID_FILE"
+            echo "تم إيقاف الإشعارات (PID: $pid)"
         else
-            echo "لم يكن هناك إشعارات قيد التشغيل."
+            rm -f "$PID_FILE"
+            echo "لا توجد عملية إشعارات قيد التشغيل"
         fi
-        rm -f "$PID_FILE"
     else
-        echo "لا يوجد إشعارات قيد التشغيل."
+        echo "لا توجد عملية إشعارات قيد التشغيل"
     fi
 }
 
 status_notify() {
     if [ -f "$PID_FILE" ]; then
-        local pid
         pid=$(cat "$PID_FILE")
-        if kill -0 $pid 2>/dev/null; then
+        if kill -0 "$pid" 2>/dev/null; then
             echo "الإشعارات قيد التشغيل (PID: $pid)"
-            exit 0
         else
-            echo "الإشعارات غير فعالة ولكن ملف PID موجود، سيتم حذفه."
-            rm -f "$PID_FILE"
-            exit 1
+            echo "الإشعارات متوقفة (ملف PID موجود لكن العملية غير نشطة)"
         fi
     else
-        echo "لا يوجد إشعارات قيد التشغيل."
-        exit 1
+        echo "الإشعارات متوقفة"
     fi
 }
 
+# --- دالة المساعدة ---
 usage() {
     echo "الاستخدام: $0"
-    echo "  عرض حكمة في الطرفية مع فحص التحديثات."
+    echo "  عرض حكمة في الطرفية مع فحص التحديثات في الخلفية."
     echo ""
     echo "خيارات متقدمة:"
     echo "  --notify-start      يبدأ إشعارات الحكم كل 15 دقيقة افتراضيًا."
@@ -293,6 +306,12 @@ while [[ $# -gt 0 ]]; do
             INTERVAL="$2"
             shift 2
             ;;
+        --no-update-check)
+            # خيار مخفي لتخطي فحص التحديثات (يُستخدم في المثبت)
+            MODE="terminal"
+            NO_UPDATE_CHECK=true
+            shift
+            ;;
         *)
             usage
             ;;
@@ -306,7 +325,10 @@ fi
 
 case $MODE in
     terminal)
-        maybe_update_hikam
+        # إذا لم تكن قد طلبت تخطي فحص التحديثات، قم بتشغيل الفحص في الخلفية بهدوء
+        if [ "$NO_UPDATE_CHECK" != "true" ]; then
+            check_update_background
+        fi
         show_hikma_terminal
         ;;
     notify-start)
