@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeAnimation();
     initializeScrollEffects();
     initThemeToggle();
-    initFontSelector();  // تم التحديث
+    initFontSelector();
     loadWisdomGrid();
     updateDailyWisdom();
     
@@ -177,19 +177,27 @@ function applyFont(fontName) {
     document.documentElement.style.setProperty('--font-secondary', `'${fontName}', sans-serif`);
 }
 
-// ===== Copy to Clipboard =====
+// ===== Copy to Clipboard (محدث) =====
 function copyToClipboard() {
-    const code = document.querySelector('.install-code code').textContent;
+    const codeElement = document.querySelector('.install-code code');
+    const code = codeElement.textContent;
+    
     navigator.clipboard.writeText(code).then(() => {
         const btn = event.target;
         const originalText = btn.textContent;
         btn.textContent = '✓ تم النسخ!';
         btn.style.background = '#27ae60';
+        btn.style.transform = 'scale(1.05)';
+        
         setTimeout(() => {
             btn.textContent = originalText;
             btn.style.background = '';
+            btn.style.transform = '';
         }, 2000);
-    }).catch(err => alert('حدث خطأ في النسخ'));
+    }).catch(err => {
+        alert('حدث خطأ في النسخ. يمكنك نسخ الأمر يدويًا.');
+        console.error('خطأ في النسخ:', err);
+    });
 }
 
 // ===== Smooth Scroll for Anchor Links =====
@@ -204,3 +212,4 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ===== رسالة ترحيب في الكونسول =====
 console.log('%c🌟 HIKAM - حكم 🌟', 'color: #d4af37; font-size: 20px; font-weight: bold;');
 console.log('%c أكثر من 100 حكمة من الأئمة الأربعة والحكم العربية', 'color: #1a472a; font-size: 14px;');
+console.log('%c تابعنا على اليوتيوب: https://www.youtube.com/@GnuTux', 'color: #ff0000; font-size: 12px;');
