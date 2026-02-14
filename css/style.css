@@ -382,21 +382,25 @@ a:hover {
     color: var(--primary-color);
     margin-bottom: var(--spacing-md);
     position: relative;
+    z-index: 2;
 }
 
 .title-underline {
     width: 100px;
     height: 3px;
     background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
-    margin: 0 auto;
+    margin: 0.5rem auto 1rem auto;
     border-radius: 2px;
 }
 
 .section-subtitle {
     text-align: center;
     color: var(--text-secondary);
-    margin-top: calc(var(--spacing-sm) * -1);
+    margin-top: 0.5rem;
     margin-bottom: var(--spacing-lg);
+    position: relative;
+    z-index: 1;
+    font-size: 1.1rem;
 }
 
 /* About Section */
@@ -655,6 +659,15 @@ a:hover {
 .install-text p {
     font-size: 1.1rem;
     line-height: 1.8;
+    margin-bottom: var(--spacing-md);
+}
+
+.install-features {
+    background: rgba(212, 175, 55, 0.15);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    border-right: 3px solid var(--secondary-color);
+    font-size: 1rem !important;
 }
 
 .install-code {
@@ -738,8 +751,9 @@ a:hover {
 
 .social-links {
     display: flex;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
     justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .social-link {
@@ -752,12 +766,19 @@ a:hover {
     border: 1px solid var(--secondary-color);
     border-radius: 50%;
     transition: all 0.3s ease;
-    font-size: 1.5rem;
+    color: var(--light-text);
 }
 
 .social-link:hover {
     background: var(--secondary-color);
+    transform: scale(1.1) rotate(5deg);
     color: var(--dark-text);
+}
+
+.social-link svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
 }
 
 .footer-divider {
@@ -891,6 +912,11 @@ a:hover {
     .section-title {
         font-size: 1.8rem;
     }
+    
+    .section-subtitle {
+        font-size: 1rem;
+        margin-top: 0.25rem;
+    }
 
     .installation-content {
         grid-template-columns: 1fr;
@@ -898,6 +924,10 @@ a:hover {
 
     .daily-controls {
         flex-direction: column;
+    }
+
+    .social-links {
+        justify-content: center;
     }
 
     .scroll-top-btn {
@@ -927,9 +957,5 @@ a:hover {
 
     .footer-content {
         grid-template-columns: 1fr;
-    }
-
-    .social-links {
-        justify-content: center;
     }
 }
