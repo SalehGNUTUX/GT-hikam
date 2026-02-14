@@ -155,11 +155,11 @@ function initThemeToggle() {
     });
 }
 
-// ===== Font Selector (محدث) =====
+// ===== Font Selector (محدث - الخط المغربي كافتراضي) =====
 function initFontSelector() {
     const fontSelector = document.getElementById('fontSelector');
     
-    // تحميل الخط المحفوظ
+    // تحميل الخط المحفوظ - المغربي كافتراضي
     const savedFont = localStorage.getItem('selectedFont') || 'AALMAGHRIBI';
     applyFont(savedFont);
     fontSelector.value = savedFont;
@@ -177,7 +177,7 @@ function applyFont(fontName) {
     document.documentElement.style.setProperty('--font-secondary', `'${fontName}', sans-serif`);
 }
 
-// ===== Copy to Clipboard (محدث) =====
+// ===== Copy to Clipboard =====
 function copyToClipboard() {
     const codeElement = document.querySelector('.install-code code');
     const code = codeElement.textContent;
