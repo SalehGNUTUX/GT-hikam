@@ -160,7 +160,7 @@ function initFontSelector() {
     const fontSelector = document.getElementById('fontSelector');
     
     // تحميل الخط المحفوظ
-    const savedFont = localStorage.getItem('selectedFont') || 'Amiri';
+    const savedFont = localStorage.getItem('selectedFont') || 'AALMAGHRIBI';
     applyFont(savedFont);
     fontSelector.value = savedFont;
     
