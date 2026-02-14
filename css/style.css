@@ -24,9 +24,9 @@
     --card-bg: white;
     --border-light: #c9a85e;
     
-    /* الخطوط - سيتم تحديثها ديناميكياً عبر JavaScript */
-    --font-primary: 'Amiri', serif;
-    --font-secondary: 'Almarai', sans-serif;
+    /* الخطوط - الخط المغربي كافتراضي */
+    --font-primary: 'AALMAGHRIBI', serif;
+    --font-secondary: 'AALMAGHRIBI', sans-serif;
     
     /* المسافات */
     --spacing-xs: 0.5rem;
