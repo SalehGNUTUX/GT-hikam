@@ -60,6 +60,9 @@ body {
     line-height: 1.8;
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* Headers */
@@ -67,6 +70,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-primary);
     font-weight: 700;
     line-height: 1.4;
+    letter-spacing: -0.02em;
 }
 
 p {
@@ -102,8 +106,9 @@ a:hover {
     padding: var(--spacing-md) 0;
 }
 
+/* تحسين الشريط العلوي والقائمة */
 .nav-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 var(--spacing-lg);
     display: flex;
@@ -146,20 +151,44 @@ a:hover {
     list-style: none;
     gap: var(--spacing-md);
     align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
+/* تحسين روابط القائمة */
 .nav-link {
     color: var(--light-text);
     font-family: var(--font-primary);
     font-size: 1.1rem;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
     border-bottom: 2px solid transparent;
     transition: all 0.3s ease;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--secondary-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
 }
 
 .nav-link:hover {
     color: var(--secondary-color);
-    border-bottom-color: var(--secondary-color);
+    transform: translateY(-1px);
 }
 
 /* عناصر التحكم في الشريط */
@@ -167,15 +196,16 @@ a:hover {
 .font-selector-container {
     display: flex;
     align-items: center;
+    margin-right: 0.25rem;
 }
 
 .theme-toggle {
     background: transparent;
     border: 2px solid var(--secondary-color);
     color: var(--secondary-color);
-    font-size: 1.5rem;
-    width: 45px;
-    height: 45px;
+    font-size: 1.4rem;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -197,7 +227,7 @@ a:hover {
     color: var(--light-text);
     border: 2px solid var(--secondary-color);
     border-radius: 30px;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1.8rem 0.5rem 2.5rem;
     font-family: var(--font-primary);
     font-size: 0.95rem;
     cursor: pointer;
@@ -208,9 +238,10 @@ a:hover {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
     background-repeat: no-repeat;
     background-position: left 1rem center;
-    background-size: 16px;
-    padding-left: 2.5rem;
-    min-width: 180px;
+    background-size: 14px;
+    min-width: 160px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
 }
 
 /* تنسيق الخيارات داخل القائمة */
@@ -869,7 +900,37 @@ body.dark-mode .font-selector option:first-child {
     display: flex;
 }
 
-/* Responsive Design */
+/* تحسينات للشاشات المتوسطة */
+@media (max-width: 1200px) {
+    .nav-menu {
+        gap: var(--spacing-sm);
+    }
+    
+    .nav-link {
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .font-selector {
+        min-width: 140px;
+        font-size: 0.9rem;
+        padding: 0.5rem 1.5rem 0.5rem 2.2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-link {
+        font-size: 0.95rem;
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .font-selector {
+        min-width: 130px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Responsive Design للشاشات الصغيرة */
 @media (max-width: 768px) {
     :root {
         --spacing-lg: 1.5rem;
@@ -887,14 +948,22 @@ body.dark-mode .font-selector option:first-child {
         padding: var(--spacing-lg);
         gap: var(--spacing-md);
         box-shadow: 0 4px 10px var(--shadow-color);
+        width: 100%;
     }
 
     .nav-menu.active {
         display: flex;
     }
 
-    .hamburger {
-        display: flex;
+    .nav-link {
+        width: 100%;
+        text-align: center;
+        font-size: 1.1rem;
+        padding: 0.75rem;
+    }
+
+    .nav-link::after {
+        display: none;
     }
 
     .theme-toggle-container,
@@ -905,6 +974,10 @@ body.dark-mode .font-selector option:first-child {
     .font-selector {
         width: 100%;
         text-align: center;
+    }
+
+    .hamburger {
+        display: flex;
     }
 
     .title-main {
