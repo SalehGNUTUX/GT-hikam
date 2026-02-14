@@ -191,6 +191,7 @@ a:hover {
     transform: scale(1.1) rotate(15deg);
 }
 
+/* تحسين قائمة اختيار الخطوط */
 .font-selector {
     background: rgba(255,255,255,0.15);
     color: var(--light-text);
@@ -209,16 +210,33 @@ a:hover {
     background-position: left 1rem center;
     background-size: 16px;
     padding-left: 2.5rem;
+    min-width: 180px;
 }
 
-.font-selector:hover {
-    background: rgba(212, 175, 55, 0.3);
-    border-color: var(--secondary-color);
-}
-
+/* تنسيق الخيارات داخل القائمة */
 .font-selector option {
     background: var(--bg-secondary);
     color: var(--text-primary);
+    padding: var(--spacing-sm);
+    font-family: var(--font-secondary);
+}
+
+/* تنسيق خاص للخيار الأول (المغربي) */
+.font-selector option:first-child {
+    background: linear-gradient(135deg, var(--secondary-color), #b8860b);
+    color: var(--dark-text);
+    font-weight: bold;
+}
+
+/* للعناية بمظهر القائمة في الوضع الداكن */
+body.dark-mode .font-selector option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+body.dark-mode .font-selector option:first-child {
+    background: linear-gradient(135deg, #b8860b, #8b6910);
+    color: #ffffff;
 }
 
 .hamburger {
