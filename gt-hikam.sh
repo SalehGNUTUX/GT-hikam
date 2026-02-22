@@ -408,14 +408,20 @@ case $MODE in
         ;;
     uninstall)
         if [ -f "$INSTALL_DIR/uninstall-gt-hikam.sh" ]; then
+            # التأكد من صلاحية التنفيذ
+            if [ ! -x "$INSTALL_DIR/uninstall-gt-hikam.sh" ]; then
+                echo -e "${YELLOW}⚠ جاري منح صلاحية التنفيذ لملف إلغاء التثبيت...${NC}"
+                chmod +x "$INSTALL_DIR/uninstall-gt-hikam.sh"
+            fi
             echo "جاري تشغيل برنامج إلغاء التثبيت..."
             exec "$INSTALL_DIR/uninstall-gt-hikam.sh"
         else
             echo -e "${RED}خطأ: لم يتم العثور على برنامج إلغاء التثبيت في $INSTALL_DIR${NC}"
-            echo -e "${YELLOW}يمكنك إلغاء التثبيت يدوياً بحذف المجلد:${NC}"
-            echo "  rm -rf $INSTALL_DIR"
-            echo "  rm -f ~/.local/bin/gt-hikam"
-            echo "  ثم قم بإزالة الأسطر المتعلقة بـ GT-hikam من ملفات .bashrc و .zshrc"
+            echo -e "${YELLOW}يمكنك إلغاء التثبيت يدوياً:${NC}"
+            echo "  1. إيقاف الإشعارات: pkill -f gt-hikam"
+            echo "  2. حذف المجلد: rm -rf $INSTALL_DIR"
+            echo "  3. حذف الرابط: rm -f ~/.local/bin/gt-hikam"
+            echo "  4. إزالة الأسطر من .bashrc و .zshrc يدوياً"
             exit 1
         fi
         ;;
