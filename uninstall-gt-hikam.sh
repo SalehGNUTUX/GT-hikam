@@ -59,7 +59,7 @@ stop_notifications() {
     fi
 }
 
-# إزالة من ملفات الإعداد بطريقة آمنة
+# إزالة من ملفات الإعداد
 remove_from_shell_rc() {
     echo -e "\n${BLUE}[2/5]${NC} إزالة أسطر GT-hikam من ملفات الإعداد..."
     
@@ -68,42 +68,14 @@ remove_from_shell_rc() {
             # عمل نسخة احتياطية
             cp "$rc_file" "${rc_file}.backup-$(date +%Y%m%d-%H%M%S)" 2>/dev/null
             
-            # البحث عن كتلة GT-hikam وإزالتها بالكامل
-            if grep -q "# GT-hikam:" "$rc_file"; then
-                # طريقة أكثر أماناً: إنشاء ملف مؤقت بدون أسطر GT-hikam
-                local temp_file="${rc_file}.tmp"
-                local inside_block=0
-                
-                while IFS= read -r line; do
-                    if [[ "$line" == *"# GT-hikam:"* ]]; then
-                        inside_block=1
-                        continue
-                    elif [[ $inside_block -eq 1 ]]; then
-                        # نهاية الكتلة عند الوصول لسطر فارغ أو سطر لا يبدأ بمسافة أو if/fi
-                        if [[ "$line" =~ ^[[:space:]]*$ ]] || [[ ! "$line" =~ ^(if|fi|[[:space:]]) ]]; then
-                            inside_block=0
-                        else
-                            continue
-                        fi
-                    fi
-                    
-                    # كتابة الأسطر غير المرتبطة بـ GT-hikam
-                    if [[ $inside_block -eq 0 ]] && [[ ! "$line" == *"GT-hikam"* ]] && [[ ! "$line" == *".GT-hikam"* ]]; then
-                        echo "$line" >> "$temp_file"
-                    fi
-                done < "$rc_file"
-                
-                # استبدال الملف الأصلي بالملف المؤقت
-                mv "$temp_file" "$rc_file"
-                echo -e "${GREEN}✓${NC} تمت إزالة أسطر GT-hikam من $(basename $rc_file)"
-            else
-                # إزالة أي أسطر متفرقة قد تكون بقيت
-                sed -i '/# GT-hikam:/d' "$rc_file"
-                sed -i '/\.GT-hikam\/gt-hikam\.sh/d' "$rc_file"
-                sed -i '/GT-hikam/d' "$rc_file"
-                sed -i '/# إضافة ~\/.local\/bin إلى PATH/d' "$rc_file"
-                sed -i '/export PATH="\$HOME\/.local\/bin:\$PATH"/d' "$rc_file"
-            fi
+            # إزالة الأسطر المتعلقة بـ GT-hikam
+            sed -i '/# GT-hikam:/d' "$rc_file"
+            sed -i '/\.GT-hikam\/gt-hikam\.sh/d' "$rc_file"
+            sed -i '/GT-hikam/d' "$rc_file"
+            sed -i '/# إضافة ~\/.local\/bin إلى PATH/d' "$rc_file"
+            sed -i '/export PATH="\$HOME\/.local\/bin:\$PATH"/d' "$rc_file"
+            
+            echo -e "${GREEN}✓${NC} تمت إزالة الأسطر من $(basename $rc_file)"
             
             # التحقق من صحة الملف بعد التعديل
             if [[ "$rc_file" == *".bashrc" ]]; then
@@ -111,8 +83,7 @@ remove_from_shell_rc() {
                     echo -e "${GREEN}✓${NC} ملف $(basename $rc_file) سليم بعد التعديل"
                 else
                     echo -e "${RED}✗${NC} يوجد خطأ في ملف $(basename $rc_file) بعد التعديل!"
-                    echo -e "${YELLOW}⚠${NC} جاري استعادة النسخة الاحتياطية..."
-                    cp "${rc_file}.backup-"* "$rc_file" 2>/dev/null
+                    echo -e "${YELLOW}⚠${NC} يرجى مراجعة الملف يدوياً"
                 fi
             fi
         fi
@@ -203,8 +174,6 @@ main() {
     echo -e "\n${YELLOW}⚠  مهم:${NC}"
     echo -e "  • يرجى إعادة تشغيل الطرفية أو تنفيذ الأمر التالي:"
     echo -e "    ${BLUE}source ~/.bashrc${NC} (أو source ~/.zshrc للزش)"
-    echo -e "  • إذا واجهت أي أخطاء، يمكنك استعادة النسخة الاحتياطية من:"
-    echo -e "    ${WHITE}~/.bashrc.backup-YYYYMMDD-HHMMSS${NC}"
     
     echo -e "\n${CYAN}══════════════════════════════════════════════════════════${NC}"
     echo -e "${WHITE}لإعادة التثبيت لاحقًا:${NC}"
