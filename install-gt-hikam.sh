@@ -194,7 +194,7 @@ confirm_uninstall() {
     echo -e "\n${YELLOW}⚠  تحذير:${NC}"
     echo "هذا الإجراء سيقوم بـ:"
     echo "  1. إيقاف جميع الإشعارات الدورية"
-    echo "  2. إزالة السكريبت من ملفات الإعداد (.bashrc, .zshrc)"
+    echo "  2. إزالة أسطر GT-hikam من ملفات الإعداد (.bashrc, .zshrc)"
     echo "  3. حذف جميع ملفات البرنامج من ${INSTALL_DIR}"
     echo "  4. إزالة الرابط التنفيذي من ~/.local/bin/"
     echo "  5. تنظيف الملفات المؤقتة"
@@ -226,24 +226,32 @@ stop_notifications() {
     fi
 }
 
-# إزالة من ملفات الإعداد
+# إزالة من ملفات الإعداد بطريقة آمنة
 remove_from_shell_rc() {
-    echo -e "\n${BLUE}[2/5]${NC} إزالة السكريبت من ملفات الإعداد..."
+    echo -e "\n${BLUE}[2/5]${NC} إزالة أسطر GT-hikam من ملفات الإعداد..."
     
     for rc_file in "$HOME/.bashrc" "$HOME/.zshrc" "$HOME/.bash_profile" "$HOME/.profile"; do
         if [ -f "$rc_file" ]; then
-            if grep -q "GT-hikam" "$rc_file" || grep -q "\.GT-hikam" "$rc_file" || grep -q "\.local/bin" "$rc_file"; then
-                # نسخ احتياطي
-                cp "$rc_file" "${rc_file}.gt-hikam-backup" 2>/dev/null
-                
-                # إزالة السطور المتعلقة بـ GT-hikam
-                sed -i '/# GT-hikam:/d' "$rc_file"
-                sed -i '/\.GT-hikam\/gt-hikam\.sh/d' "$rc_file"
-                sed -i '/GT-hikam/d' "$rc_file"
-                sed -i '/# إضافة ~\/.local\/bin إلى PATH/d' "$rc_file"
-                sed -i '/export PATH="\$HOME\/.local\/bin:\$PATH"/d' "$rc_file"
-                
-                echo -e "${GREEN}✓${NC} تمت الإزالة من $(basename $rc_file)"
+            # عمل نسخة احتياطية
+            cp "$rc_file" "${rc_file}.backup-$(date +%Y%m%d-%H%M%S)" 2>/dev/null
+            
+            # إزالة الأسطر المتعلقة بـ GT-hikam
+            sed -i '/# GT-hikam:/d' "$rc_file"
+            sed -i '/\.GT-hikam\/gt-hikam\.sh/d' "$rc_file"
+            sed -i '/GT-hikam/d' "$rc_file"
+            sed -i '/# إضافة ~\/.local\/bin إلى PATH/d' "$rc_file"
+            sed -i '/export PATH="\$HOME\/.local\/bin:\$PATH"/d' "$rc_file"
+            
+            echo -e "${GREEN}✓${NC} تمت إزالة الأسطر من $(basename $rc_file)"
+            
+            # التحقق من صحة الملف بعد التعديل
+            if [[ "$rc_file" == *".bashrc" ]]; then
+                if bash -n "$rc_file" 2>/dev/null; then
+                    echo -e "${GREEN}✓${NC} ملف $(basename $rc_file) سليم بعد التعديل"
+                else
+                    echo -e "${RED}✗${NC} يوجد خطأ في ملف $(basename $rc_file) بعد التعديل!"
+                    echo -e "${YELLOW}⚠${NC} يرجى مراجعة الملف يدوياً"
+                fi
             fi
         fi
     done
@@ -272,6 +280,11 @@ remove_symlink() {
     if [ -L "$HOME/.local/bin/gt-hikam" ]; then
         rm -f "$HOME/.local/bin/gt-hikam"
         echo -e "${GREEN}✓${NC} تم إزالة الرابط التنفيذي من ~/.local/bin/"
+        
+        # إزالة المجلد إذا كان فارغاً
+        if [ -d "$HOME/.local/bin" ] && [ -z "$(ls -A "$HOME/.local/bin")" ]; then
+            rmdir "$HOME/.local/bin" 2>/dev/null && echo -e "${GREEN}✓${NC} تم إزالة المجلد الفارغ ~/.local/bin/"
+        fi
     else
         echo -e "${YELLOW}⚠${NC} الرابط التنفيذي غير موجود"
     fi
@@ -284,13 +297,6 @@ clean_temp_files() {
     # حذف ملفات التكوين
     rm -f "$HOME/.gt-hikam.conf" 2>/dev/null
     rm -f "$HOME/.config/gt-hikam" 2>/dev/null
-    
-    # حذف أي نسخ احتياطية قديمة
-    for rc_file in "$HOME/.bashrc" "$HOME/.zshrc"; do
-        if [ -f "${rc_file}.gt-hikam-backup" ]; then
-            rm -f "${rc_file}.gt-hikam-backup"
-        fi
-    done
     
     echo -e "${GREEN}✓${NC} تم تنظيف الملفات المؤقتة"
 }
@@ -327,12 +333,14 @@ main() {
     
     echo -e "\n${WHITE}ملاحظات:${NC}"
     echo -e "  • ${GREEN}✓${NC} تم إيقاف جميع الإشعارات الدورية"
-    echo -e "  • ${GREEN}✓${NC} تمت إزالة السكريبت من ملفات الإعداد"
+    echo -e "  • ${GREEN}✓${NC} تمت إزالة أسطر GT-hikam من ملفات الإعداد"
     echo -e "  • ${GREEN}✓${NC} تم حذف جميع ملفات البرنامج"
     echo -e "  • ${GREEN}✓${NC} تم إزالة الرابط التنفيذي"
     echo -e "  • ${GREEN}✓${NC} تم تنظيف الملفات المؤقتة"
     
-    echo -e "\n${YELLOW}للتأكد من التغييرات، يرجى إعادة فتح الطرفية الحالية.${NC}"
+    echo -e "\n${YELLOW}⚠  مهم:${NC}"
+    echo -e "  • يرجى إعادة تشغيل الطرفية أو تنفيذ الأمر التالي:"
+    echo -e "    ${BLUE}source ~/.bashrc${NC} (أو source ~/.zshrc للزش)"
     
     echo -e "\n${CYAN}══════════════════════════════════════════════════════════${NC}"
     echo -e "${WHITE}لإعادة التثبيت لاحقًا:${NC}"
@@ -368,7 +376,7 @@ fi
 main
 EOF
         chmod +x "$INSTALL_DIR/$UNINSTALL_SCRIPT"
-        echo -e "${GREEN}✓${NC} تم إنشاء سكريبت إلغاء التثبيت محليًا"
+        echo -e "${GREEN}✓${NC} تم إنشاء سكريبت إلغاء التثبيت ومنحه صلاحية التنفيذ"
     }
     
     # إعداد سياسة التحديث التلقائي
@@ -458,7 +466,7 @@ EOF
     echo -e "  ${BLUE}gt-hikam --help${NC}                 - عرض المساعدة"
     echo -e "  ${BLUE}gt-hikam --notify-stop${NC}          - إيقاف الإشعارات"
     echo -e "  ${BLUE}gt-hikam --update-hikam${NC}         - تحديث الحكم"
-    echo -e "  ${BLUE}~/.GT-hikam/uninstall-gt-hikam.sh${NC} - إلغاء التثبيت"
+    echo -e "  ${BLUE}gt-hikam --uninstall${NC}            - إلغاء التثبيت"
     
     echo -e "\n${GREEN}تم تفعيل الإشعارات الدورية كل 15 دقيقة تلقائيًا.${NC}"
     echo -e "${YELLOW}لإيقاف الإشعارات:${NC} gt-hikam --notify-stop"
