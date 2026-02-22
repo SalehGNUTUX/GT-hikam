@@ -1,6 +1,17 @@
 #!/bin/bash
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# الحصول على المسار الحقيقي حتى مع وجود روابط رمزية
+get_script_real_path() {
+    local source="${BASH_SOURCE[0]}"
+    while [ -h "$source" ]; do
+        local dir="$(cd -P "$(dirname "$source")" && pwd)"
+        source="$(readlink "$source")"
+        [[ $source != /* ]] && source="$dir/$source"
+    done
+    echo "$(cd -P "$(dirname "$source")" && pwd)"
+}
+
+SCRIPT_DIR="$(get_script_real_path)"
 HIKAM_FILE="$SCRIPT_DIR/hikam.txt"
 PID_FILE="$SCRIPT_DIR/.gt-hikam-notify.pid"
 CONFIG_FILE="$SCRIPT_DIR/.gt-hikam.conf"
@@ -109,6 +120,12 @@ check_update_background() {
 
 # --- عرض حكمة طرفية ---
 get_random_hikma() {
+    # التأكد من وجود ملف الحكم
+    if [ ! -f "$HIKAM_FILE" ]; then
+        echo "ملف الحكم غير موجود: $HIKAM_FILE" >&2
+        return 1
+    fi
+    
     awk -v RS='%' '
     {
         gsub(/^[ \t\r\n]+|[ \t\r\n]+$/, "", $0);
@@ -318,8 +335,10 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# التحقق من وجود ملف الحكم
 if [ ! -f "$HIKAM_FILE" ]; then
-    echo "ملف الحكم $HIKAM_FILE غير موجود!"
+    echo -e "${RED}ملف الحكم $HIKAM_FILE غير موجود!${NC}" >&2
+    echo -e "${YELLOW}يرجى تشغيل: ${NC}gt-hikam --update-hikam${NC}" >&2
     exit 1
 fi
 
