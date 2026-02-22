@@ -12,6 +12,7 @@ get_script_real_path() {
 }
 
 SCRIPT_DIR="$(get_script_real_path)"
+INSTALL_DIR="$HOME/.GT-hikam"
 HIKAM_FILE="$SCRIPT_DIR/hikam.txt"
 PID_FILE="$SCRIPT_DIR/.gt-hikam-notify.pid"
 CONFIG_FILE="$SCRIPT_DIR/.gt-hikam.conf"
@@ -20,6 +21,16 @@ UPDATE_CHECK_TIMEOUT=3  # 3 ثواني للتحقق من التحديثات في
 GITHUB_HIKAM_RAW_URL="https://raw.githubusercontent.com/SalehGNUTUX/GT-hikam/main/hikam.txt"
 DEFAULT_INTERVAL=$((15*60)) # 15 دقيقة
 AUTO_UPDATE="ask"  # ask | always | never
+
+# ألوان للعرض الجمالي
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
 
 # --- تحميل إعداد التحديث التلقائي إن وجد ---
 load_config() {
@@ -157,7 +168,6 @@ show_hikma_terminal() {
     # عرض جمالي
     local width=60
     local border_char="═"
-    local corner_char="╔╗╚╝"
     
     # إنشاء الحدود
     local border_line=""
@@ -271,18 +281,24 @@ status_notify() {
 
 # --- دالة المساعدة ---
 usage() {
-    echo "الاستخدام: $0"
+    echo "الاستخدام: gt-hikam [خيارات]"
     echo "  عرض حكمة في الطرفية مع فحص التحديثات في الخلفية."
     echo ""
-    echo "خيارات متقدمة:"
-    echo "  --notify-start      يبدأ إشعارات الحكم كل 15 دقيقة افتراضيًا."
-    echo "  --notify-start -i 600   يبدأ إشعارات كل 10 دقائق (بالثواني)."
-    echo "  --notify-stop      يوقف الإشعارات الدورية."
-    echo "  --notify-status    يعرض حالة الإشعار."
-    echo "  --check-update     فحص وجود تحديث فقط."
-    echo "  --update-hikam     جلب آخر تحديث لملف الحكم مباشرة."
-    echo "  --auto-update [always|never|ask]  تغيير سياسة التحديث التلقائي."
-    exit 1
+    echo "الخيارات:"
+    echo "  -h, --help          عرض هذه المساعدة"
+    echo "  --notify-start      يبدأ إشعارات الحكم كل 15 دقيقة افتراضيًا"
+    echo "  --notify-stop       يوقف الإشعارات الدورية"
+    echo "  --notify-status     يعرض حالة الإشعار"
+    echo "  --check-update      فحص وجود تحديث فقط"
+    echo "  --update-hikam      جلب آخر تحديث لملف الحكم مباشرة"
+    echo "  --auto-update [always|never|ask]  تغيير سياسة التحديث التلقائي"
+    echo "  --uninstall         تشغيل برنامج إلغاء التثبيت"
+    echo ""
+    echo "أمثلة:"
+    echo "  gt-hikam                    # عرض حكمة"
+    echo "  gt-hikam --update-hikam     # تحديث ملف الحكم"
+    echo "  gt-hikam --uninstall        # إلغاء تثبيت البرنامج"
+    exit 0
 }
 
 # --- بدء التنفيذ ---
@@ -291,52 +307,66 @@ load_config
 MODE="terminal"
 INTERVAL=$DEFAULT_INTERVAL
 
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --notify-start)
-            MODE="notify-start"
-            shift
-            ;;
-        --notify-stop)
-            MODE="notify-stop"
-            shift
-            ;;
-        --notify-status)
-            MODE="notify-status"
-            shift
-            ;;
-        --check-update)
-            MODE="check-update"
-            shift
-            ;;
-        --update-hikam)
-            MODE="update-hikam"
-            shift
-            ;;
-        --auto-update)
-            AUTO_UPDATE="$2"
-            save_config
-            echo "تم تعيين سياسة التحديث التلقائي إلى: $AUTO_UPDATE"
-            exit 0
-            ;;
-        -i|--interval)
-            INTERVAL="$2"
-            shift 2
-            ;;
-        --no-update-check)
-            # خيار مخفي لتخطي فحص التحديثات (يُستخدم في المثبت)
-            MODE="terminal"
-            NO_UPDATE_CHECK=true
-            shift
-            ;;
-        *)
-            usage
-            ;;
-    esac
-done
+# معالجة الخيارات
+if [[ $# -eq 0 ]]; then
+    # لا توجد خيارات، عرض حكمة
+    MODE="terminal"
+else
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                usage
+                ;;
+            --notify-start)
+                MODE="notify-start"
+                shift
+                ;;
+            --notify-stop)
+                MODE="notify-stop"
+                shift
+                ;;
+            --notify-status)
+                MODE="notify-status"
+                shift
+                ;;
+            --check-update)
+                MODE="check-update"
+                shift
+                ;;
+            --update-hikam)
+                MODE="update-hikam"
+                shift
+                ;;
+            --auto-update)
+                AUTO_UPDATE="$2"
+                save_config
+                echo "تم تعيين سياسة التحديث التلقائي إلى: $AUTO_UPDATE"
+                exit 0
+                ;;
+            --uninstall)
+                MODE="uninstall"
+                shift
+                ;;
+            -i|--interval)
+                INTERVAL="$2"
+                shift 2
+                ;;
+            --no-update-check)
+                # خيار مخفي لتخطي فحص التحديثات (يُستخدم في المثبت)
+                MODE="terminal"
+                NO_UPDATE_CHECK=true
+                shift
+                ;;
+            *)
+                echo -e "${RED}خيار غير معروف: $1${NC}"
+                usage
+                ;;
+        esac
+    done
+fi
 
 # التحقق من وجود ملف الحكم
-if [ ! -f "$HIKAM_FILE" ]; then
+if [ ! -f "$HIKAM_FILE" ] && [ "$MODE" != "uninstall" ] && [ "$MODE" != "update-hikam" ]; then
     echo -e "${RED}ملف الحكم $HIKAM_FILE غير موجود!${NC}" >&2
     echo -e "${YELLOW}يرجى تشغيل: ${NC}gt-hikam --update-hikam${NC}" >&2
     exit 1
@@ -375,6 +405,19 @@ case $MODE in
         ;;
     update-hikam)
         update_hikam
+        ;;
+    uninstall)
+        if [ -f "$INSTALL_DIR/uninstall-gt-hikam.sh" ]; then
+            echo "جاري تشغيل برنامج إلغاء التثبيت..."
+            exec "$INSTALL_DIR/uninstall-gt-hikam.sh"
+        else
+            echo -e "${RED}خطأ: لم يتم العثور على برنامج إلغاء التثبيت في $INSTALL_DIR${NC}"
+            echo -e "${YELLOW}يمكنك إلغاء التثبيت يدوياً بحذف المجلد:${NC}"
+            echo "  rm -rf $INSTALL_DIR"
+            echo "  rm -f ~/.local/bin/gt-hikam"
+            echo "  ثم قم بإزالة الأسطر المتعلقة بـ GT-hikam من ملفات .bashrc و .zshrc"
+            exit 1
+        fi
         ;;
     *)
         usage
